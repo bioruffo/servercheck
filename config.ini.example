@@ -1,0 +1,19 @@
+[email]
+sender = sender@gmail.com
+receiver = receiver@gmail.com
+# APP PASSWORD IS CONFIDENTIAL
+app_password = 16characterspass
+mailserver = smtp.gmail.com:587
+
+[parameters]
+# Server name (to be included in the e-mail message)
+server = avogadro
+# Thresholds
+maxtemp = 70
+maxcpu = 90
+maxmem = 80
+maxdisk = 90
+# Disk partitions to be checked
+partitions = /, /home
+# Data points to be kept in status_log.json (672 = one week at a rate of one check per 15 minutes)
+datapoints = 672

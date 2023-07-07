@@ -4,7 +4,6 @@ Part of the initial structure (in particular the plotting functions and the core
 
 ## Requirements  
  - sensors: `sudo apt install lm-sensors` (for temperature reading)  
- - mpstat: `sudo apt install syystat` (for CPU usage reading)  
 
 ## Installation  
 1. Clone the repository to a directory of your choosing.  

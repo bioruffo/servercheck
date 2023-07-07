@@ -6,6 +6,7 @@ import configparser
 import argparse
 import json
 import os, sys
+import psutil
 from datetime import datetime
 import matplotlib
 matplotlib.use('Agg')
@@ -328,7 +329,7 @@ class ServerCheck:
 
     def _send_email(self, subject="", message=""):
         '''
-        
+        Send an e-mail according to the parameters set in the config file.
 
         Parameters
         ----------
@@ -405,7 +406,6 @@ class ServerCheck:
             print('Something went wrong...', e)
 
 
-
     def _log_status(self):
         '''
         Append the current status to the logfile.
@@ -455,9 +455,10 @@ class ServerCheck:
 
         return temperatures
 
+
     def _get_cpu_usage(self):
         '''
-        Use the output of 'mpstat 3 1' to get the current CPU usage.
+        Use psutil to get the current CPU usage.
 
         Returns
         -------
@@ -465,28 +466,14 @@ class ServerCheck:
             A float representing the total CPU usage % at the current time.
 
         '''
-        command = ["mpstat", "3", "1"] # Using only 'mpstat' would return an average since reboot, not useful
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate()
-
-        if process.returncode != 0:
-            print(f"Error occurred: {stderr.decode('utf-8')}")
-            return None
-
-        output = stdout.decode('utf-8')
-
-        match = re.search(r'Average:\s+all\s+(\d+.\d+)', output)
-
-        if match:
-           cpu_usage = float(match.group(1).replace(",", "."))
-        else:
-            cpu_usage = None
+        cpu_usage = psutil.cpu_percent(5)
 
         return cpu_usage
 
+
     def _get_memory_usage(self):
         '''
-        Use the output of 'free' to get the current memory usage.
+        Use psutil to get the current memory usage.
 
         Returns
         -------
@@ -494,26 +481,10 @@ class ServerCheck:
             The current memory usage.
 
         '''
-        command = ["free"]
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate()
-
-        if process.returncode != 0:
-            print(f"Error occurred: {stderr.decode('utf-8')}")
-            return None
-
-        output = stdout.decode('utf-8')
-
-        match = re.search(r'Mem:\s+(\d+)\s+(\d+)', output)
-
-        if match:
-            total_memory = int(match.group(1))
-            used_memory = int(match.group(2))
-            memory_usage = used_memory / total_memory * 100
-        else:
-            memory_usage = None
+        memory_usage = psutil.virtual_memory()[2]
 
         return memory_usage
+
 
     def _get_disk_usage(self, mountlist=["/", "/home"]):
         '''

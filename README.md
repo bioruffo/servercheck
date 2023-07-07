@@ -22,7 +22,9 @@ Type `crontab -e`  and append the following line to the file (adjust for the loc
 */15 * * * * /usr/bin/python3 /home/myuser/.../servercheck/servercheck.py
 ```
 
-Example report (via `python3 servercheck.py --notify` after about 350 data points were collected):  
+Example report:  
+(Command: `python3 servercheck.py --notify` after about 350 data points were collected):  
+  
 <img src="https://github.com/bioruffo/servercheck/assets/24945128/4db7429f-564b-424a-bd67-d5094aaddb8b" width=30% height=30%>
 <img src="https://github.com/bioruffo/servercheck/assets/24945128/cf7e0b1c-69a2-4a94-aa51-0b0ff0824c51" width=30% height=30%>
 
